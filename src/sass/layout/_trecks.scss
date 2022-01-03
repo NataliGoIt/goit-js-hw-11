@@ -5,9 +5,9 @@
     align-items: center;
     width: 100%;
     // width: 930px;
-    height: 60px;
+    height: 80px;
     border-radius: 25px;
-    padding: 15px;
+    padding: 5px;
     border: 1px solid #2E2F30;
 box-sizing: border-box;
 box-shadow: inset 0px 0px 6px rgba(119, 121, 123, 0.25);
@@ -28,7 +28,7 @@ border-radius: 25px;
 }
 .trecks{
     padding-top: 48px;
-    padding-bottom: 48px;
+    padding-bottom: 64px;
 //    background-image: url(../src/images/bg_4.jpg);
     //  background-size: cover;
     //  background-position: center;
@@ -51,7 +51,7 @@ border-radius: 25px;
 // }
 
 .trecks__description{
-    font-size: 10px;
+    font-size: 12px;
     &:not(:last-child){
         margin-bottom: 5px;
     }
