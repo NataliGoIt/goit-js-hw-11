@@ -1,0 +1,71 @@
+.dowland__bagdrop{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(49, 49, 49, 0.904);
+    z-index: 100;
+}
+.is-close{
+    overflow: auto;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+.dowland__box{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 80vw;
+    height: 80vh;
+    
+
+    background-color: #21202213;
+    box-shadow: inset 0px 0px 6px rgba(54, 55, 56, 0.25);
+filter: drop-shadow(0px 0px 6px rgba(64, 63, 70, 0.8));
+}
+.dowland__box-color{
+    padding: 40px 30px;
+    background-color: #212122da;
+}
+.dowland__list{
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+}
+.dowland__item{
+    height: 30px;
+    &:not(:last-child){
+        margin-bottom: 20px;
+    }
+}
+.dowland__social-link{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.close-btn-down{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border: none;
+    padding: 0;
+    
+    font-family: inherit;
+    background-color:inherit;
+}
+.dowland__social-list{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: o auto;
+}
+.dowland__social-box{
+    margin-top: 25px;
+}

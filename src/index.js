@@ -1,93 +1,69 @@
-import '/./sass/main.css';
-import searchImages from './js/api';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
-
-const searchForm = document.querySelector('[id="search-form"]');
-const galleryDiv = document.querySelector('.gallery');
-const loadMoreBtn = document.querySelector('.load-more');
-
-let page = 1;
-let searchQuery = '';
-let totalHits;
-
-searchForm.addEventListener('submit', onFormSubmit);
-loadMoreBtn.addEventListener('click', onloadMoreBtn);
-loadMoreBtn.classList.add('is-hidden');
-function onloadMoreBtn() {
-  searchImages(searchQuery, page).then(res => {
-    renderGallery(res);
-    isEndOfImg(page, totalHits);
-    page += 1;
-  });
+const refs = {
+  playBtn: document.querySelector('.button__play-pause'),
+  play: document.querySelector('.play'),
+  pause: document.querySelector('.pause'),
+  progressBar: document.querySelector('.progress__bar'),
+  progress: document.querySelector('.progress'),
+  song: document.querySelector('#audio'),
+  burgerMenu: document.querySelector('.burger-menu'),
+  bagdrop: document.querySelector('.backdrop'),
+  closeMenu: document.querySelector('.close-btn'),
+  dowlandMenu: document.querySelector('.link__trecks'),
+  bagdropDown: document.querySelector('.dowland__bagdrop'),
+  closeDown: document.querySelector('.close-btn-down'),  
+}
+refs.playBtn.addEventListener('click', onPlay);
+function onPlay(){
+  if (refs.playBtn.classList.contains('play')) {
+    refs.playBtn.classList.remove('play')
+    refs.playBtn.classList.add('pause')
+    refs.song.play()
+     }else{
+      refs.playBtn.classList.add('play')
+      refs.playBtn.classList.remove('pause')
+      refs.song.pause()
+     } 
+}
+refs.song.addEventListener('timeupdate', onSongTime)
+function onSongTime(e){
+  const {duration, currentTime} = e.srcElement;
+  const progressPercent = (currentTime / duration) * 100;
+  refs.progressBar.style.width = `${progressPercent}%`; 
 }
 
-function onFormSubmit(e) {
-  e.preventDefault();
-  searchQuery = e.currentTarget.elements.searchQuery.value;
-  loadMoreBtn.classList.add('is-hidden');
-  galleryDiv.innerHTML = '';
-  page = 1;
+refs.progressBar.addEventListener('click', onProgress) 
+ function onProgress (e){
+  const width = refs.progress.clientWidth;
+  let clickedOffSetX = e.offsetX;
+  let soungDuration = refs.song.duration;
 
-  if (searchQuery === '') {
-    return Notify.failure('Please enter your search data.');
-  }
-  e.target.reset();
-  searchImages(searchQuery, page).then(res => {
-    const imgArray = res.data.hits;
-    totalHits = res.data.totalHits;
-
-    if (imgArray.length === 0) {
-      loadMoreBtn.classList.add('is-hidden');
-      return Notify.failure(
-        'Sorry, there are no images matching your search query. Please try again.',
-      );
-    }
-
-    Notify.success(`Hooray! We found ${totalHits} images.`);
-    renderGallery(res);
-    loadMoreBtn.classList.remove('is-hidden');
-    isEndOfImg(page, totalHits);
-    page += 1;
-  });
+  refs.song.currentTime = (clickedOffSetX /  width) * soungDuration;
+ 
 }
-function isEndOfImg(page, totalHits) {
-  if (page * 40 >= totalHits) {
-    loadMoreBtn.classList.add('is-hidden');
-    Notify.success("We're sorry, but you've reached the end of search results.");
-  }
-}
-function renderGallery(images) {
-  const imgArray = images.data.hits;
-  const markup = imgArray
-    .map(
-      ({ largeImageURL, webformatURL, tags, likes, views, comments, downloads }) =>
-        `<div class="photo-card">
-  <a class="gallery__item" href="${largeImageURL}">
-  <img src="${webformatURL}" alt="${tags}" loading="lazy" width="354" height="225"/></a>
-  <div class="info">
-    <p class="info-item">
-      <b>Likes </br><span class='text'>${likes}</span></b>
-    </p>
-    <p class="info-item">
-      <b>Views  </br><span class='text'>${views}</span></b>
-    </p>
-    <p class="info-item">
-      <b>Comments  </br><span class='text'>${comments}</span></b>
-    </p>
-    <p class="info-item">
-      <b>Downloads  </br><span class='text'>${downloads}</span></b>
-    </p>
-  </div>
-</div>`,
-    )
-    .join('');
-  galleryDiv.insertAdjacentHTML('beforeend', markup);
 
-  const lightbox = new SimpleLightbox('.gallery a', {
-    captionDelay: 250,
-    captionsData: 'alt',
-  });
-  lightbox.refresh();
+
+
+refs.burgerMenu.addEventListener('click', onModalContact);
+refs.closeMenu.addEventListener('click', onModalContact);
+refs.bagdrop.addEventListener('click', onModalContact);
+function onModalContact(){
+  if (refs.bagdrop.classList.contains('is-hidden')) {
+    refs.bagdrop.classList.remove('is-hidden')
+    document.body.classList.add('hidden')
+     }else{
+      refs.bagdrop.classList.add('is-hidden')
+      document.body.classList.remove('hidden')
+     } 
+}
+refs.dowlandMenu.addEventListener('click', onModalDown);
+refs.bagdropDown.addEventListener('click', onModalDown);
+refs.closeDown.addEventListener('click', onModalDown);
+function onModalDown(){
+  if (refs.bagdropDown.classList.contains('is-close')) {
+    refs.bagdropDown.classList.remove('is-close')
+    document.body.classList.add('hidden')
+     }else{
+      refs.bagdropDown.classList.add('is-close')
+      document.body.classList.remove('hidden')
+     } 
 }
